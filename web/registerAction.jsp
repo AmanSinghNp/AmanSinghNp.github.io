@@ -1,35 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:useBean id="user" class="com.iotbay.model.User" scope="session" />
+
 <%
     // Get form data
     String username = request.getParameter("username");
+    String fullName = request.getParameter("fullName");
+    String email = request.getParameter("email");
     String password = request.getParameter("password");
-    String remember = request.getParameter("remember");
+    String confirmPassword = request.getParameter("confirmPassword");
     
     // Basic validation
     if (username == null || username.trim().isEmpty() || 
-        password == null || password.trim().isEmpty()) {
+        fullName == null || fullName.trim().isEmpty() ||
+        email == null || email.trim().isEmpty() ||
+        password == null || password.trim().isEmpty() ||
+        confirmPassword == null || confirmPassword.trim().isEmpty()) {
         
-        // Redirect back to login page with error message
-        response.sendRedirect(request.getContextPath() + "/login.jsp?error=required");
+        response.sendRedirect(request.getContextPath() + "/register.jsp?error=invalid");
         return;
     }
     
-    // For the prototype, we'll simulate a successful login with demo credentials
-    // In a real application, this would check against a database
-    if (username.equals("demo") && password.equals("password")) {
-        // Create a user object for the session
-        java.util.HashMap<String, Object> user = new java.util.HashMap<>();
-        user.put("username", username);
-        user.put("fullName", "Demo User");
-        user.put("email", "demo@example.com");
-        
-        // Store user in session
-        session.setAttribute("user", user);
-        
-        // Redirect to dashboard
-        response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
-    } else {
-        // Redirect back to login page with error message
-        response.sendRedirect(request.getContextPath() + "/login.jsp?error=invalid");
+    // Check if passwords match
+    if (!password.equals(confirmPassword)) {
+        response.sendRedirect(request.getContextPath() + "/register.jsp?error=password");
+        return;
     }
+    
+    // For the prototype, simulate successful registration
+    // In a real app, this would check for existing users and save to a database
+    
+    // Set JavaBean properties
+    user.setUsername(username);
+    user.setFullName(fullName);
+    user.setEmail(email);
+    
+    // Redirect to welcome page
+    response.sendRedirect(request.getContextPath() + "/welcome.jsp");
 %>
