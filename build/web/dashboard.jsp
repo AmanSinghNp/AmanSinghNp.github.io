@@ -20,7 +20,7 @@
 
 <section class="dashboard-section">
     <div class="dashboard-header">
-        <h1>Welcome, ${sessionScope.user.fullName}</h1>
+        <h1>Welcome, ${user.fullName}</h1>
         <p>Manage your account, orders, and more</p>
     </div>
     
